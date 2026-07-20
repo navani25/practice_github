@@ -1,10 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In</title>
-  
+  <title>Authentication</title>
+
   <style>
     /* Global Resets & Styles */
     * {
@@ -25,7 +26,7 @@
     }
 
     /* Card Container */
-    .login-card {
+    .auth-card {
       background: #1e293b;
       border: 1px solid #334155;
       border-radius: 12px;
@@ -36,19 +37,19 @@
     }
 
     /* Header */
-    .login-header {
+    .auth-header {
       text-align: center;
       margin-bottom: 2rem;
     }
 
-    .login-header h2 {
+    .auth-header h2 {
       font-size: 1.75rem;
       font-weight: 600;
       color: #ffffff;
       margin-bottom: 0.5rem;
     }
 
-    .login-header p {
+    .auth-header p {
       color: #94a3b8;
       font-size: 0.9rem;
     }
@@ -152,21 +153,22 @@
       background: #4f46e5;
     }
 
-    /* Footer Links */
-    .signup-link {
+    /* Switch View Links */
+    .switch-view {
       text-align: center;
       margin-top: 1.5rem;
       font-size: 0.85rem;
       color: #94a3b8;
     }
 
-    .signup-link a {
+    .switch-view a {
       color: #818cf8;
       text-decoration: none;
       font-weight: 600;
+      cursor: pointer;
     }
 
-    .signup-link a:hover {
+    .switch-view a:hover {
       text-decoration: underline;
     }
 
@@ -177,229 +179,325 @@
       margin-top: 0.4rem;
       display: none;
     }
-.back-btn{
 
-width:100%;
+    .back-btn {
 
-margin-top:15px;
+      width: 100%;
 
-padding:12px;
+      margin-top: 15px;
 
-background:transparent;
+      padding: 12px;
 
-border:1px solid #334155;
+      background: transparent;
 
-color:#cbd5e1;
+      border: 1px solid #334155;
 
-border-radius:8px;
+      color: #cbd5e1;
 
-cursor:pointer;
+      border-radius: 8px;
 
-font-size:15px;
+      cursor: pointer;
 
-transition:.3s;
+      font-size: 15px;
 
-}
+      transition: .3s;
 
-.back-btn:hover{
+    }
 
-background:#334155;
+    .back-btn:hover {
 
-}
+      background: #334155;
+
+    }
 
 
-#forgotScreen{
+    #forgotScreen {
 
-animation:fade .35s ease;
+      animation: fade .35s ease;
 
-}
+    }
 
-#loginScreen{
+    #loginScreen {
 
-animation:fade .35s ease;
+      animation: fade .35s ease;
 
-}
+    }
 
-@keyframes fade{
+    @keyframes fade {
 
-from{
+      from {
 
-opacity:0;
+        opacity: 0;
 
-transform:translateY(15px);
+        transform: translateY(15px);
 
-}
+      }
 
-to{
+      to {
 
-opacity:1;
+        opacity: 1;
 
-transform:translateY(0);
+        transform: translateY(0);
 
-}
+      }
 
-}
+    }
 
+
+    /* Utility to hide forms dynamically */
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
+
 <body>
+  <script>
 
-<div class="login-card">
+    const loginScreen = document.getElementById("loginScreen");
 
-  <!-- LOGIN FORM -->
-  <div id="loginScreen">
+    const forgotScreen = document.getElementById("forgotScreen");
 
-    <div class="login-header">
-      <h2>Welcome back</h2>
-      <p>Please enter your credentials to log in</p>
-    </div>
+    document
+      .getElementById("forgotPassword")
+      .onclick = function (e) {
 
-    <form>
+        e.preventDefault();
 
-      <div class="form-group">
-        <label>Email address</label>
-        <input type="email" placeholder="name@company.com">
+        loginScreen.style.display = "none";
+
+        forgotScreen.style.display = "block";
+
+      }
+
+
+
+    document
+      .getElementById("backLogin")
+      .onclick = function () {
+
+        forgotScreen.style.display = "none";
+
+        loginScreen.style.display = "block";
+
+      }
+
+
+
+    // Password Toggle
+
+    const toggle = document.getElementById("togglePassword");
+
+    const password = document.getElementById("password");
+
+    toggle.onclick = function () {
+
+      if (password.type === "password") {
+
+        password.type = "text";
+
+        toggle.innerHTML = "Hide";
+
+      } else {
+
+        password.type = "password";
+
+        toggle.innerHTML = "Show";
+
+      }
+
+    }
+
+  </script>
+
+  <div class="auth-card">
+
+    <!-- ================= SIGN IN VIEW ================= -->
+    <div id="signInContainer">
+      <div class="auth-header">
+        <h2>Welcome back</h2>
+        <p>Please enter your credentials to log in</p>
       </div>
 
-      <div class="form-group">
-        <label>Password</label>
-
-        <div class="input-wrapper">
-          <input type="password" id="password" placeholder="••••••••">
-          <button type="button" class="toggle-password" id="togglePassword">
-            Show
-          </button>
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="signin-email">Email address</label>
+          <input type="email" id="signin-email" placeholder="name@company.com" required>
+          <div class="error-message" id="signinEmailError">Please enter a valid email address</div>
         </div>
 
+        <div class="form-group">
+          <label for="signin-password">Password</label>
+          <div class="input-wrapper">
+            <input type="password" id="signin-password" placeholder="••••••••" required>
+            <button type="button" class="toggle-password" data-target="signin-password">Show</button>
+          </div>
+          <div class="error-message" id="signinPasswordError">Password must be at least 6 characters</div>
+        </div>
+
+        <div class="form-options">
+          <label class="remember-me">
+            <input type="checkbox" id="remember">
+            Remember me
+          </label>
+          <a href="#" class="forgot-pass">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-submit">Sign In</button>
+      </form>
+
+      <div class="switch-view">
+        Don't have an account? <a id="showSignUp">Sign up</a>
+      </div>
+    </div>
+
+    <!-- ================= SIGN UP VIEW ================= -->
+    <div id="signUpContainer" class="hidden">
+      <div class="auth-header">
+        <h2>Create an account</h2>
+        <p>Enter your details to get started</p>
       </div>
 
-      <div class="form-options">
+      <form id="signupForm" novalidate>
+        <div class="form-group">
+          <label for="signup-name">Full Name</label>
+          <input type="text" id="signup-name" placeholder="John Doe" required>
+          <div class="error-message" id="signupNameError">Please enter your name</div>
+        </div>
 
-        <label class="remember-me">
-          <input type="checkbox">
-          Remember me
-        </label>
+        <div class="form-group">
+          <label for="signup-email">Email address</label>
+          <input type="email" id="signup-email" placeholder="name@company.com" required>
+          <div class="error-message" id="signupEmailError">Please enter a valid email address</div>
+        </div>
 
-        <a href="#" class="forgot-pass" id="forgotPassword">
-          Forgot password?
-        </a>
+        <div class="form-group">
+          <label for="signup-password">Password</label>
+          <div class="input-wrapper">
+            <input type="password" id="signup-password" placeholder="••••••••" required>
+            <button type="button" class="toggle-password" data-target="signup-password">Show</button>
+          </div>
+          <div class="error-message" id="signupPasswordError">Password must be at least 6 characters</div>
+        </div>
 
+        <button type="submit" class="btn-submit">Create Account</button>
+      </form>
+
+      <div class="switch-view">
+        Already have an account? <a id="showSignIn">Sign in</a>
       </div>
-
-      <button class="btn-submit">
-        Sign In
-      </button>
-
-    </form>
-
-    <div class="signup-link">
-      Don't have an account?
-      <a href="#">Sign up</a>
     </div>
 
   </div>
 
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Elements
+      const signInContainer = document.getElementById('signInContainer');
+      const signUpContainer = document.getElementById('signUpContainer');
+      const showSignUpBtn = document.getElementById('showSignUp');
+      const showSignInBtn = document.getElementById('showSignIn');
 
+      const loginForm = document.getElementById('loginForm');
+      const signupForm = document.getElementById('signupForm');
 
-  <!-- FORGOT PASSWORD -->
+      // 1. Switch between Sign In and Sign Up views
+      showSignUpBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        signInContainer.classList.add('hidden');
+        signUpContainer.classList.remove('hidden');
+        document.title = "Sign Up";
+      });
 
-  <div id="forgotScreen" style="display:none;">
+      showSignInBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        signUpContainer.classList.add('hidden');
+        signInContainer.classList.remove('hidden');
+        document.title = "Sign In";
+      });
 
-    <div class="login-header">
+      // 2. Generic Password Visibility Toggle for both forms
+      document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', () => {
+          const targetId = button.getAttribute('data-target');
+          const passwordInput = document.getElementById(targetId);
+          const isPassword = passwordInput.type === 'password';
 
-      <h2>Forgot Password?</h2>
+          passwordInput.type = isPassword ? 'text' : 'password';
+          button.textContent = isPassword ? 'Hide' : 'Show';
+        });
+      });
 
-      <p>
-        Enter your registered email address and we'll send you a password reset link.
-      </p>
+      // 3. Sign In Form Validation & Submission
+      loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let isValid = true;
 
-    </div>
+        const emailInput = document.getElementById('signin-email');
+        const emailError = document.getElementById('signinEmailError');
+        const passwordInput = document.getElementById('signin-password');
+        const passwordError = document.getElementById('signinPasswordError');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    <form>
+        if (!emailRegex.test(emailInput.value.trim())) {
+          emailError.style.display = 'block';
+          isValid = false;
+        } else {
+          emailError.style.display = 'none';
+        }
 
-      <div class="form-group">
+        if (passwordInput.value.length < 6) {
+          passwordError.style.display = 'block';
+          isValid = false;
+        } else {
+          passwordError.style.display = 'none';
+        }
 
-        <label>Email address</label>
+        if (isValid) {
+          alert(`Sign-in submitted for: ${emailInput.value.trim()}`);
+        }
+      });
 
-        <input
-          type="email"
-          placeholder="name@company.com">
+      // 4. Sign Up Form Validation & Submission
+      signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        let isValid = true;
 
-      </div>
+        const nameInput = document.getElementById('signup-name');
+        const nameError = document.getElementById('signupNameError');
+        const emailInput = document.getElementById('signup-email');
+        const emailError = document.getElementById('signupEmailError');
+        const passwordInput = document.getElementById('signup-password');
+        const passwordError = document.getElementById('signupPasswordError');
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      <button class="btn-submit">
-        Send Reset Link
-      </button>
+        if (nameInput.value.trim() === '') {
+          nameError.style.display = 'block';
+          isValid = false;
+        } else {
+          nameError.style.display = 'none';
+        }
 
-    </form>
+        if (!emailRegex.test(emailInput.value.trim())) {
+          emailError.style.display = 'block';
+          isValid = false;
+        } else {
+          emailError.style.display = 'none';
+        }
 
-    <button class="back-btn" id="backLogin">
-        ← Back to Sign In
-    </button>
+        if (passwordInput.value.length < 6) {
+          passwordError.style.display = 'block';
+          isValid = false;
+        } else {
+          passwordError.style.display = 'none';
+        }
 
-  </div>
-
-</div>
-
-
-
-<script>
-
-const loginScreen=document.getElementById("loginScreen");
-
-const forgotScreen=document.getElementById("forgotScreen");
-
-document
-.getElementById("forgotPassword")
-.onclick=function(e){
-
-e.preventDefault();
-
-loginScreen.style.display="none";
-
-forgotScreen.style.display="block";
-
-}
-
-
-
-document
-.getElementById("backLogin")
-.onclick=function(){
-
-forgotScreen.style.display="none";
-
-loginScreen.style.display="block";
-
-}
-
-
-
-// Password Toggle
-
-const toggle=document.getElementById("togglePassword");
-
-const password=document.getElementById("password");
-
-toggle.onclick=function(){
-
-if(password.type==="password"){
-
-password.type="text";
-
-toggle.innerHTML="Hide";
-
-}else{
-
-password.type="password";
-
-toggle.innerHTML="Show";
-
-}
-
-}
-
-</script>
-
+        if (isValid) {
+          alert(`Account successfully created for ${nameInput.value.trim()} (${emailInput.value.trim()})`);
+        }
+      });
+    });
+  </script>
 </body>
+
 </html>
